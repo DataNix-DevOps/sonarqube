@@ -31,8 +31,39 @@ Create new user give ownership to /opt/sonar directory
  # password sonar
  # chown -R sonar:sonar /opt/sonar
 ```
-Allow RDS instance security group to access SonarQube server 
+Allow MYSQL instance security group to access SonarQube server 
 Install MySQL Database and Open Required Ports 
+```sh
+# sudo yum localinstall https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+```
+```sh
+# sudo yum install mysql-community-server
+```
+```sh
+# sudo systemctl enable mysqld
+# sudo systemctl start mysqld
+```
+```sh
+# sudo systemctl status mysqld
+```
+# Check Temporary Password 
+```sh
+sudo grep 'temporary password' /var/log/mysqld.log
+```
+
+Make note of the password, because the next command will ask you to enter the temporary root password.
+Run the mysql_secure_installation command to improve the security of our MySQL installation:
+```sh
+# sudo mysql_secure_installation
+```
+Connecting to MySQL from the command line
+
+To interact with MySQL through the terminal we will use the MySQL client which is installed as a dependency of the MySQL server package.
+To log in to the MySQL server as the root user type:
+```sh
+mysql -u root -p
+```
+
 ```sh 
 mysql -h <RDS_Instance_endpoint>:3306 -u <DB_USER_NAME> -p <DB_PASSWORD> 
 ```
