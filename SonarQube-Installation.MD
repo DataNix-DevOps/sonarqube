@@ -14,11 +14,11 @@ Install MySQL client version
  ```sh
   # yum install mysql
  ```
-Download stable SonarQube version from below website. 
+# Download stable SonarQube version from below website. 
 - Website: https://www.sonarqube.org/downloads/
-- Note: This Article written for SonarQube version 6.7.6
+- Note: This Article written for SonarQube version
 
-Download & unzip SonarQube 6.7.6
+Download & unzip SonarQube Latest Version
 ```sh
 # cd /opt
 # wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.6.zip
@@ -31,8 +31,7 @@ Create new user give ownership to /opt/sonar directory
  # password sonar
  # chown -R sonar:sonar /opt/sonar
 ```
-Allow MYSQL instance security group to access SonarQube server 
-Install MySQL Database and Open Required Ports 
+# Install MySQL Server and Client Database
 ```sh
 # sudo yum localinstall https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
 ```
@@ -46,7 +45,7 @@ Install MySQL Database and Open Required Ports
 ```sh
 # sudo systemctl status mysqld
 ```
-# Check Temporary Password 
+ Check Temporary Password 
 ```sh
 sudo grep 'temporary password' /var/log/mysqld.log
 ```
