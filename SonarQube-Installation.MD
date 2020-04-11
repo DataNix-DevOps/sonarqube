@@ -4,7 +4,7 @@ SonarQube provides the capability to not only show health of an application but 
 
 
 ### Prerequisites
-1. EC2 instance with Java installed
+1. Java
 1. MySQL Database Server or MyQL RDS instance.
 
 ### Installation
@@ -32,8 +32,7 @@ Create new user give ownership to /opt/sonar directory
  # chown -R sonar:sonar /opt/sonar
 ```
 Allow RDS instance security group to access SonarQube server 
-
-Connect to RDS instance with database credentials
+Install MySQL Database and Open Required Ports 
 ```sh 
 mysql -h <RDS_Instance_endpoint>:3306 -u <DB_USER_NAME> -p <DB_PASSWORD> 
 ```
@@ -62,7 +61,7 @@ SELECT User FROM mysql.user;
 FLUSH PRIVILEGES;
 QUIT
 ```
-So for you have configured required database information on RDS. Let’s Jump back to your EC2 instance and enable SonarQube properties file to connect his Database.
+So for you have configured required database information . Let’s Jump back to your EC2 instance and enable SonarQube properties file to connect his Database.
 
 ### ON EC2 Instance
 Edit sonar properties file to uncomment and provide required information for below properties. 
