@@ -1,4 +1,4 @@
-# SonarQube Installation
+# SonarQube Installation  ( Updated By Joe )
 
 SonarQube provides the capability to not only show health of an application but also to highlight issues newly introduced. With a Quality Gate in place, you can fix the leak and therefore improve code quality systematically.
 
@@ -106,7 +106,7 @@ Start SonarQube server
 ```
 SonarQube application uses port 9000. access SonarQube from browser
 ```sh
-  http://<EC2_PUBLIC_IP>:9000/sonar
+  http://<YourIP OR Hostname>:9000/sonar
 ```
 ###  Troubleshooting 
 
