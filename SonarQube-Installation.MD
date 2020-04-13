@@ -5,7 +5,7 @@ SonarQube provides the capability to not only show health of an application but 
 
 ### Prerequisites
 1. Java
-1. MySQL Database Server or MyQL RDS instance.
+2. Database (MySQL) 
 
 ### Installation
 
@@ -91,9 +91,9 @@ SELECT User FROM mysql.user;
 FLUSH PRIVILEGES;
 QUIT
 ```
-So for you have configured required database information . Let’s Jump back to your EC2 instance and enable SonarQube properties file to connect his Database.
+So for you have configured required database information . Let’s Jump back to your instance and enable SonarQube properties file to connect his Database.
 
-### ON EC2 Instance
+### ON Instance
 Edit sonar properties file to uncomment and provide required information for below properties. 
 
 - File Name: /opt/sonar/conf/sonar.properties
@@ -140,8 +140,8 @@ SonarQube application uses port 9000. access SonarQube from browser
 ```
 ###  Troubleshooting 
 
-1. Check whether you enabled port 9000 in EC2 instance security group
-2. Check whether you enabled EC2 instance IP range in RDS security group
+1. Check whether you enabled port 9000 in instance security group
+2. Check whether you enabled instance IP range in security group
 
 ### Next Step
 - [x] [Integrate SonarQube with Jenkins]()
