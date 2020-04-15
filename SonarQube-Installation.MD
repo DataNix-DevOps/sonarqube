@@ -142,6 +142,8 @@ SonarQube application uses port 9000. access SonarQube from browser
 
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
+3. /etc/security/limits.conf
+4. /etc/sysctl.conf
 
 ### Next Step
 - [x] [Integrate SonarQube with Jenkins]()
