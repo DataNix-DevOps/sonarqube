@@ -5,145 +5,202 @@ SonarQube provides the capability to not only show health of an application but 
 
 ### Prerequisites
 1. Java
-2. Database (MySQL) 
+2. Database ( MySQL is Deprecated so we are going to focus on PostgresSQL)
+
+### Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
+```sh
+$ sudo sysctl -w vm.max_map_count=262144
+```
+```sh
+$ sudo sysctl -w fs.file-max=65536
+```
+```sh
+$ sudo ulimit -n 65536
+```
+```sh
+$ sudo ulimit -u 4096
+```
+```sh
+$ sudo nano /etc/security/limits.conf
+```
+```sh
+/etc/security/limits.conf
+```
+sonarqube   -   nofile   65536
+sonarqube   -   nproc    4096
 
 ### Installation
 
-Install MySQL client version 
+### Step 1: Install OpenJDK
 
- ```sh
-  # yum install mysql
- ```
+```sh
+$ sudo yum install openjdk-11-jdk -y
+$ sudo yum install openjdk-11-jre -y
+$ java -version
+```
+
+### Step 2: Install PostgreSQL
+```sh
+$sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
+```
+```sh
+$ sudo yum install postgresql10-server postgresql10-contrib -y
+```
+# Initialize the Postgres database.
+```sh
+$ sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
+```
+# Open the /var/lib/pgsql/data/pg_hba.conf file.
+```sh
+$ sudo vi /var/lib/pgsql/10/data/pg_hba.conf
+```
+# Once Opened Find the below lines at the bottom of the file and change peer to trust and idnet to md5
+
+
+# Start PostgreSQL Database server
+```sh
+$ sudo systemctl start postgresql-10
+```
+# Enable it to start automatically at System Startup
+```sh
+$ sudo systemctl enable postgresql-10
+```
+# Change the password for the default PostgreSQL user.
+```sh
+$ sudo passwd postgres
+```
+# Switch to the postgres user.
+```sh
+su - postgres
+```
+# Create a new user by typing:
+```sh
+createuser sonar
+```
+# Switch to the PostgreSQL shell.
+```sh
+psql
+```
+# Set a password for the newly created user for SonarQube database.
+```sh
+ALTER USER sonar WITH ENCRYPTED password 'sonar';
+```
+# Create a new database for PostgreSQL database by running:
+```sh
+CREATE DATABASE sonarqube OWNER sonar;
+```
+# Exit from the psql shell:
+```sh
+\q
+```
+# Switch back to the sudo user by running the exit command.
+```sh
+exit
+```
+
+### Now That DB Setup Is Completed, Let's Move On To SONARQUBE Installation & Configuration 
+
 # Download stable SonarQube version from below website. 
 - Website: https://www.sonarqube.org/downloads/
 - Note: This Article written for SonarQube version
 
-Download & unzip SonarQube Latest Version
+# Download & unzip SonarQube Latest Version
 ```sh
 # cd /opt
-# wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.6.zip
-# unzip sonarqube-6.7.6.zip
-# mv /opt/sonarqube-6.7.6 /opt/sonar
+# wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.1.0.31237.zip
+# unzip sonarqube-8.1.0.31237.zip
+# mv /opt/sonarqube-8.1.0.31237 /opt/sonarqube
 ```
-Create new user give ownership to /opt/sonar directory 
+# Create new user give ownership to /opt/sonarqube directory 
 ```sh
  # useradd sonar
  # password sonar
- # chown -R sonar:sonar /opt/sonar
-```
-# Install MySQL Server and Client Database
-```sh
-# sudo yum localinstall https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
-```
-```sh
-# sudo yum install mysql-community-server
-```
-```sh
-# sudo systemctl enable mysqld
-# sudo systemctl start mysqld
-```
-```sh
-# sudo systemctl status mysqld
-```
- Check Temporary Password 
-```sh
-sudo grep 'temporary password' /var/log/mysqld.log
+ # chown -R sonar:sonar /opt/sonarqube
 ```
 
-Make note of the password, because the next command will ask you to enter the temporary root password.
-Run the mysql_secure_installation command to improve the security of our MySQL installation:
-```sh
-# sudo mysql_secure_installation
-```
-Connecting to MySQL from the command line
-
-To interact with MySQL through the terminal we will use the MySQL client which is installed as a dependency of the MySQL server package.
-To log in to the MySQL server as the root user type:
-```sh
-mysql -u root -p
-```
-
-```sh 
-mysql -h <RDS_Instance_endpoint>:3306 -u <DB_USER_NAME> -p <DB_PASSWORD> 
-```
-Create a new sonar database
-```sh
-CREATE DATABASE sonar CHARACTER SET utf8 COLLATE utf8_general_ci;
-```
-
-Create a local and a remote user
-```sh
-CREATE USER sonar@localhost IDENTIFIED BY 'sonar';
-CREATE USER sonar@'%' IDENTIFIED BY 'sonar';
-```
-
-Grant database access permissions to users 
-```sh
-GRANT ALL ON sonar.* TO sonar@localhost;
-GRANT ALL ON sonar.* TO sonar@'%';
-```
-
-check users and databases 
-```sh
-use mysql
-show databases;
-SELECT User FROM mysql.user;
-FLUSH PRIVILEGES;
-QUIT
-```
-So for you have configured required database information . Let’s Jump back to your instance and enable SonarQube properties file to connect his Database.
-
-### ON Instance
+### SonarQube Server Instance
 Edit sonar properties file to uncomment and provide required information for below properties. 
 
-- File Name: /opt/sonar/conf/sonar.properties
+- File Name: /opt/sonarqube/conf/sonar.properties
   - sonar.jdbc.username=`sonar`
   - sonar.jdbc.password=`sonar`
-  - sonar.jdbc.url=jdbc:mysql://`<RDS_DATABAE_ENDPOINT>:3306`/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance&useSSL=false
-  - sonar.web.host=`0.0.0.0`
-  - sonar.web.context=`/sonar`
+  - sonar.jdbc.url=jdbc:postgresql://localhost/sonar
 
-Switch to sonar user and start SonarQube service 
+
+## Switch to sonar user and start SonarQube service 
+
+# Edit the sonar script file and set RUN_AS_USER
+
+```sh
+sudo vi  /opt/sonarqube/bin/linux-x86-64/sonar.sh
+$RUN_AS_USER=sonar
+```
+# Execute sonar.sh as service account "sonar user"
+
 ```sh
 # su - sonar
-# cd /opt/sonar/bin/linux-x86-64/
+# cd /opt/sonarqube/bin/linux-x86-64/
 # ./sonar.sh start
 ```
 
-##### Run SonarQube as a default service 
+### Configure Systemd service
 
-Implement SonarQube server as a service
+# Create a systemd service file for SonarQube to run as System Startup.
+Add the below lines,
+
+# /etc/systemd/system/sonar.service
+
 ```sh
-Copy sonar.sh to etc/init.d/sonar and modify it according to your platform.
-# sudo cp /opt/sonar/bin/linux-x86-64/sonar.sh /etc/init.d/sonar
-# sudo vi /etc/init.d/sonar
+/etc/systemd/system/sonar.service
+
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+User=sonar
+Group=sonar
+Restart=always
+
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-Add below values to your /etc/init.d/sonar file
+# Save and close the file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
 ```sh
-Insert/modify below values
-SONAR_HOME=/opt/sonar
-PLATFORM=linux-x86-64
-
-WRAPPER_CMD="${SONAR_HOME}/bin/${PLATFORM}/wrapper"
-WRAPPER_CONF="${SONAR_HOME}/conf/wrapper.conf"
-PIDDIR="/var/run"
+# sudo systemctl start sonar
+```
+# Enable the SonarQube service to automatically  at boot time System Startup.
+```sh
+# sudo systemctl enable sonar
+```
+# check if the sonarqube service is running,
+```sh
+# sudo systemctl status sonar
 ```
 
-Start SonarQube server
+
+### SonarQube application uses port 9000. access SonarQube from browser
 ```sh
-# service sonar start
-```
-SonarQube application uses port 9000. access SonarQube from browser
-```sh
-  http://<YourIP OR Hostname>:9000/sonar
+  http://<YourIP OR Hostname>:9000
 ```
 ###  Troubleshooting 
 
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
-3. /etc/security/limits.conf
 
+###  Add the following For Troubleshooting 
+```sh
+vi /etc/security/limits.conf
+```
 ```sh
 elasticsearch soft memlock unlimited
 elasticsearch hard memlock unlimited
@@ -156,11 +213,13 @@ root - nproc 4096
 sonar - nofile 65536
 sonar - nproc 4096
 ```
-4. /etc/sysctl.conf
+```sh
+vi  /etc/sysctl.conf
+```
 ```sh
 fs.file-max = 2097152
 vm.max_map_count = 262144
 vm.swappiness = 1
 ```
 ### Next Step
-- [x] [Integrate SonarQube with Jenkins]()
+
