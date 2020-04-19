@@ -169,6 +169,11 @@ SonarQube application uses port 9000. access SonarQube from browser
 ```sh
   http://<YourIP OR Hostname>:9000
 ```
+```sh
+username: admin
+password: admin
+```
+
 Troubleshooting 
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
