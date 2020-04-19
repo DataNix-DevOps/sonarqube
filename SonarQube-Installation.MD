@@ -3,11 +3,11 @@
 SonarQube provides the capability to not only show health of an application but also to highlight issues newly introduced. With a Quality Gate in place, you can fix the leak and therefore improve code quality systematically.
 
 
-### Prerequisites
+# Prerequisites
 1. Java
 2. Database ( MySQL is Deprecated so we are going to focus on PostgresSQL)
 
-### Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
+# Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
 ```sh
 $ sudo sysctl -w vm.max_map_count=262144
 ```
@@ -29,9 +29,9 @@ $ sudo nano /etc/security/limits.conf
 sonarqube   -   nofile   65536
 sonarqube   -   nproc    4096
 
-### Installation
+# Installation
 
-### Step 1: Install OpenJDK
+# Step 1: Install OpenJDK
 
 ```sh
 $ sudo yum install openjdk-11-jdk -y
@@ -39,7 +39,7 @@ $ sudo yum install openjdk-11-jre -y
 $ java -version
 ```
 
-### Step 2: Install PostgreSQL
+# Step 2: Install PostgreSQL
 ```sh
 $sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
 ```
@@ -127,7 +127,7 @@ Edit sonar properties file to uncomment and provide required information for bel
   - sonar.jdbc.url=jdbc:postgresql://localhost/sonar
 
 
-## Switch to sonar user and start SonarQube service 
+# Switch to sonar user and start SonarQube service 
 
 # Edit the sonar script file and set RUN_AS_USER
 
@@ -144,13 +144,12 @@ $RUN_AS_USER=sonar
 ```
 
 ### Configure Systemd service
-
-# Create a systemd service file for SonarQube to run as System Startup.
+Create a systemd service file for SonarQube to run as System Startup.
 Add the below lines,
 
-# /etc/systemd/system/sonar.service
+ vi /etc/systemd/system/sonar.service
 
-```sh
+
 /etc/systemd/system/sonar.service
 
 [Unit]
@@ -172,7 +171,7 @@ LimitNPROC=4096
 
 [Install]
 WantedBy=multi-user.target
-```
+
 
 # Save and close the file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
 ```sh
@@ -188,16 +187,16 @@ WantedBy=multi-user.target
 ```
 
 
-### SonarQube application uses port 9000. access SonarQube from browser
+# SonarQube application uses port 9000. access SonarQube from browser
 ```sh
   http://<YourIP OR Hostname>:9000
 ```
-###  Troubleshooting 
+#  Troubleshooting 
 
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
 
-###  Add the following For Troubleshooting 
+#  Add the following For Troubleshooting 
 ```sh
 vi /etc/security/limits.conf
 ```
@@ -221,5 +220,5 @@ fs.file-max = 2097152
 vm.max_map_count = 262144
 vm.swappiness = 1
 ```
-### Next Step
+
 
