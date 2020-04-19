@@ -1,4 +1,4 @@
-# SonarQube Installation  ( Updated By Joe )
+# SonarQube Installation 
 
 SonarQube provides the capability to not only show health of an application but also to highlight issues newly introduced. With a Quality Gate in place, you can fix the leak and therefore improve code quality systematically.
 
@@ -153,7 +153,7 @@ LimitNPROC=4096
 WantedBy=multi-user.target
 ```
 
-# Save and close the above file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
+Save and close the above file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
 ```sh
 # sudo systemctl start sonarqube.service
 ```
@@ -169,8 +169,7 @@ SonarQube application uses port 9000. access SonarQube from browser
 ```sh
   http://<YourIP OR Hostname>:9000
 ```
-#  Troubleshooting 
-
+Troubleshooting 
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
 
