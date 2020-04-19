@@ -7,7 +7,7 @@ SonarQube provides the capability to not only show health of an application but 
 1. Java
 2. Database ( MySQL is Deprecated so we are going to focus on PostgresSQL)
 
-# Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
+Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
 ```sh
 $ sudo sysctl -w vm.max_map_count=262144
 $ sudo sysctl -w fs.file-max=65536
@@ -26,9 +26,8 @@ sonarqube   -   nproc    4096
 # Installation
 Step 1: Install OpenJDK
 ```sh
-$ sudo yum install openjdk-11-jdk -y
-$ sudo yum install openjdk-11-jre -y
-$ java -version
+$ sudo yum install java-1.8.0-openjdk-devel
+$ sudo java -version
 ```
 
 # Step 2: Install PostgreSQL
