@@ -10,29 +10,21 @@ SonarQube provides the capability to not only show health of an application but 
 # Increase the vm.max_map_count kernal ,file discriptor and ulimit for current session at runtime.
 ```sh
 $ sudo sysctl -w vm.max_map_count=262144
-```
-```sh
 $ sudo sysctl -w fs.file-max=65536
-```
-```sh
 $ sudo ulimit -n 65536
-```
-```sh
 $ sudo ulimit -u 4096
 ```
 ```sh
 $ sudo nano /etc/security/limits.conf
 ```
 ```sh
-/etc/security/limits.conf
+vi /etc/security/limits.conf  # Add Below To The File
 ```
 sonarqube   -   nofile   65536
 sonarqube   -   nproc    4096
 
 # Installation
-
-# Step 1: Install OpenJDK
-
+Step 1: Install OpenJDK
 ```sh
 $ sudo yum install openjdk-11-jdk -y
 $ sudo yum install openjdk-11-jre -y
@@ -45,13 +37,7 @@ $sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7
 ```
 ```sh
 $ sudo yum install postgresql10-server postgresql10-contrib -y
-```
-Initialize the Postgres database.
-```sh
 $ sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
-```
-Open the /var/lib/pgsql/data/pg_hba.conf file.
-```sh
 $ sudo vi /var/lib/pgsql/10/data/pg_hba.conf
 ```
 Once Opened Find the below lines at the bottom of the file and change peer to trust and idnet to md5
