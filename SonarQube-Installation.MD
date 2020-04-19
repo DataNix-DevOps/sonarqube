@@ -46,54 +46,56 @@ $sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7
 ```sh
 $ sudo yum install postgresql10-server postgresql10-contrib -y
 ```
-# Initialize the Postgres database.
+Initialize the Postgres database.
 ```sh
 $ sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
 ```
-# Open the /var/lib/pgsql/data/pg_hba.conf file.
+Open the /var/lib/pgsql/data/pg_hba.conf file.
 ```sh
 $ sudo vi /var/lib/pgsql/10/data/pg_hba.conf
 ```
-# Once Opened Find the below lines at the bottom of the file and change peer to trust and idnet to md5
-
-
-# Start PostgreSQL Database server
+Once Opened Find the below lines at the bottom of the file and change peer to trust and idnet to md5
+```sh
+peer  change to trust
+idnet change to md5
+```
+Start PostgreSQL Database server
 ```sh
 $ sudo systemctl start postgresql-10
 ```
-# Enable it to start automatically at System Startup
+Enable it to start automatically at System Startup
 ```sh
 $ sudo systemctl enable postgresql-10
 ```
-# Change the password for the default PostgreSQL user.
+Change the password for the default PostgreSQL user.
 ```sh
 $ sudo passwd postgres
 ```
-# Switch to the postgres user.
+Switch to the postgres user.
 ```sh
 su - postgres
 ```
-# Create a new user by typing:
+Create a new user by typing:
 ```sh
 createuser sonar
 ```
-# Switch to the PostgreSQL shell.
+Switch to the PostgreSQL shell.
 ```sh
 psql
 ```
-# Set a password for the newly created user for SonarQube database.
+Set a password for the newly created user for SonarQube database.
 ```sh
 ALTER USER sonar WITH ENCRYPTED password 'sonar';
 ```
-# Create a new database for PostgreSQL database by running:
+Create a new database for PostgreSQL database by running:
 ```sh
 CREATE DATABASE sonarqube OWNER sonar;
 ```
-# Exit from the psql shell:
+Exit from the psql shell:
 ```sh
 \q
 ```
-# Switch back to the sudo user by running the exit command.
+Switch back to the sudo user by running the exit command.
 ```sh
 exit
 ```
@@ -104,39 +106,33 @@ exit
 - Website: https://www.sonarqube.org/downloads/
 - Note: This Article written for SonarQube version
 
-# Download & unzip SonarQube Latest Version
+Download & unzip SonarQube Latest Version
 ```sh
 # cd /opt
 # wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.1.0.31237.zip
 # unzip sonarqube-8.1.0.31237.zip
 # mv /opt/sonarqube-8.1.0.31237 /opt/sonarqube
 ```
-# Create new user give ownership to /opt/sonarqube directory 
+Create new user give ownership to /opt/sonarqube directory 
 ```sh
  # useradd sonar
  # password sonar
  # chown -R sonar:sonar /opt/sonarqube
 ```
-
-### SonarQube Server Instance
+SonarQube Server Instance
 Edit sonar properties file to uncomment and provide required information for below properties. 
-
+```sh
 - File Name: /opt/sonarqube/conf/sonar.properties
   - sonar.jdbc.username=`sonar`
   - sonar.jdbc.password=`sonar`
   - sonar.jdbc.url=jdbc:postgresql://localhost/sonar
-
-
-# Switch to sonar user and start SonarQube service 
-
-# Edit the sonar script file and set RUN_AS_USER
-
+```
+Switch to sonar user and start SonarQube service : Edit the sonar script file and set RUN_AS_USER
 ```sh
 sudo vi  /opt/sonarqube/bin/linux-x86-64/sonar.sh
 $RUN_AS_USER=sonar
 ```
-# Execute sonar.sh as service account "sonar user"
-
+Execute sonar.sh as service account "sonar user"
 ```sh
 # su - sonar
 # cd /opt/sonarqube/bin/linux-x86-64/
@@ -145,11 +141,10 @@ $RUN_AS_USER=sonar
 
 ### Configure Systemd service
 Create a systemd service file for SonarQube to run as System Startup.
+
 Add the below lines,
-
- vi /etc/systemd/system/sonar.service
-
-
+vi /etc/systemd/system/sonarqube.service
+```sh
 /etc/systemd/system/sonar.service
 
 [Unit]
@@ -171,23 +166,21 @@ LimitNPROC=4096
 
 [Install]
 WantedBy=multi-user.target
-
-
-# Save and close the file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
-```sh
-# sudo systemctl start sonar
 ```
-# Enable the SonarQube service to automatically  at boot time System Startup.
+
+# Save and close the above file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
+```sh
+# sudo systemctl start sonarqube.service
+```
+Enable the SonarQube service to automatically  at boot time System Startup.
 ```sh
 # sudo systemctl enable sonar
 ```
-# check if the sonarqube service is running,
+Check if the sonarqube service is running,
 ```sh
 # sudo systemctl status sonar
 ```
-
-
-# SonarQube application uses port 9000. access SonarQube from browser
+SonarQube application uses port 9000. access SonarQube from browser
 ```sh
   http://<YourIP OR Hostname>:9000
 ```
@@ -196,7 +189,7 @@ WantedBy=multi-user.target
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
 
-#  Add the following For Troubleshooting 
+Add the following For Troubleshooting 
 ```sh
 vi /etc/security/limits.conf
 ```
@@ -220,5 +213,3 @@ fs.file-max = 2097152
 vm.max_map_count = 262144
 vm.swappiness = 1
 ```
-
-
