@@ -20,8 +20,20 @@ $ sudo nano /etc/security/limits.conf
 ```sh
 vi /etc/security/limits.conf  # Add Below To The File
 ```
-sonarqube   -   nofile   65536
-sonarqube   -   nproc    4096
+```sh
+elasticsearch soft memlock unlimited
+elasticsearch hard memlock unlimited
+elasticsearch - nofile 65536
+elasticsearch - nproc 4096
+root soft memlock unlimited
+root hard memlock unlimited
+root - nofile 65536
+root - nproc 4096
+sonar - nofile 65536
+sonar - nproc 4096
+sonarqube - nofile 65536
+sonarqube - nproc 4096
+```
 
 # Installation
 Step 1: Install OpenJDK
