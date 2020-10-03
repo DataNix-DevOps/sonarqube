@@ -119,6 +119,10 @@ Create new user give ownership to /opt/sonarqube directory
 SonarQube Server Instance
 Edit sonar properties file to uncomment and provide required information for below properties. 
 ```sh
+vi /opt/sonarqube/conf/sonar.properties
+```
+
+```sh
 - File Name: /opt/sonarqube/conf/sonar.properties
   - sonar.jdbc.username=`sonar`
   - sonar.jdbc.password=`sonar`
