@@ -15,6 +15,9 @@ $ ulimit -n 65536
 $ ulimit -u 4096
 ```
 ```sh
+Edit the file below
+```
+```sh
 vi  /etc/sysctl.conf
 ```
 ```sh
@@ -24,7 +27,7 @@ vm.swappiness = 1
 ```
 
 ```sh
-$ sudo nano /etc/security/limits.conf
+Edit the file below
 ```
 ```sh
 vi /etc/security/limits.conf  # Add Below To The File
