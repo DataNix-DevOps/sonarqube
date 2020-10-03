@@ -51,10 +51,10 @@ $ sudo yum install postgresql10-server postgresql10-contrib -y
 $ sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
 $ sudo vi /var/lib/pgsql/10/data/pg_hba.conf
 ```
-Once Opened Find the below lines at the bottom of the file and change peer to trust and idnet to md5
+Find below lines at the bottom of the file and change peer to trust and ident to md5 on ipv4 and ipv6 connections
 ```sh
 peer  change to trust
-idnet change to md5
+ident change to md5
 ```
 Start PostgreSQL Database server
 ```sh
