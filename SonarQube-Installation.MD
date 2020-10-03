@@ -144,10 +144,10 @@ Execute sonar.sh as service account "sonar user"
 Create a systemd service file for SonarQube to run as System Startup.
 
 Add the below lines,
-vi /etc/systemd/system/sonarqube.service
 ```sh
-/etc/systemd/system/sonar.service
-
+vi /etc/systemd/system/sonarqube.service
+```
+```sh
 [Unit]
 Description=SonarQube service
 After=syslog.target network.target
@@ -168,8 +168,10 @@ LimitNPROC=4096
 [Install]
 WantedBy=multi-user.target
 ```
+Save and close the above file. 
 
-Save and close the above file. Now stop the sonarqube script earlier we started to run using as daemon. Start the Sonarqube daemon by running:
+Stop existing sonarqube run that was trigger by sonar and login as "root" to rerun sonar as a server . Start the Sonarqube daemon by running:
+
 ```sh
 # sudo systemctl start sonarqube.service
 ```
