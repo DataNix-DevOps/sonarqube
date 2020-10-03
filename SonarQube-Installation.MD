@@ -131,7 +131,7 @@ vi /opt/sonarqube/conf/sonar.properties
 Switch to sonar user and start SonarQube service : Edit the sonar script file and set RUN_AS_USER
 ```sh
 sudo vi  /opt/sonarqube/bin/linux-x86-64/sonar.sh
-$RUN_AS_USER=sonar
+$RUN_AS_USER="sonar"
 ```
 Execute sonar.sh as service account "sonar user"
 ```sh
