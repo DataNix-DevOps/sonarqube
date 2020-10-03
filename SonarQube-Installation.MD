@@ -15,6 +15,15 @@ $ ulimit -n 65536
 $ ulimit -u 4096
 ```
 ```sh
+vi  /etc/sysctl.conf
+```
+```sh
+fs.file-max = 2097152
+vm.max_map_count = 262144
+vm.swappiness = 1
+```
+
+```sh
 $ sudo nano /etc/security/limits.conf
 ```
 ```sh
@@ -196,27 +205,4 @@ Troubleshooting
 1. Check whether you enabled port 9000 in instance security group
 2. Check whether you enabled instance IP range in security group
 
-Add the following For Troubleshooting 
-```sh
-vi /etc/security/limits.conf
-```
-```sh
-elasticsearch soft memlock unlimited
-elasticsearch hard memlock unlimited
-elasticsearch - nofile 65536
-elasticsearch - nproc 4096
-root soft memlock unlimited
-root hard memlock unlimited
-root - nofile 65536
-root - nproc 4096
-sonar - nofile 65536
-sonar - nproc 4096
-```
-```sh
-vi  /etc/sysctl.conf
-```
-```sh
-fs.file-max = 2097152
-vm.max_map_count = 262144
-vm.swappiness = 1
-```
+
