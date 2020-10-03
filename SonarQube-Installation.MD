@@ -15,22 +15,15 @@ $ ulimit -n 65536
 $ ulimit -u 4096
 ```
 ```sh
-Edit the file below
-```
-```sh
-vi  /etc/sysctl.conf
+vi  /etc/sysctl.conf  # Add Below To The End of The File
 ```
 ```sh
 fs.file-max = 2097152
 vm.max_map_count = 262144
 vm.swappiness = 1
 ```
-
 ```sh
-Edit the file below
-```
-```sh
-vi /etc/security/limits.conf  # Add Below To The File
+vi /etc/security/limits.conf  # Add Below To The End of The File
 ```
 ```sh
 elasticsearch soft memlock unlimited
