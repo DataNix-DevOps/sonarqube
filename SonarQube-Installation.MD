@@ -182,11 +182,11 @@ Stop existing sonarqube run that was trigger by sonar and login as "root" to rer
 ```
 Enable the SonarQube service to automatically  at boot time System Startup.
 ```sh
-# sudo systemctl enable sonar
+# sudo systemctl enable sonarqube
 ```
 Check if the sonarqube service is running,
 ```sh
-# sudo systemctl status sonar
+# sudo systemctl status sonarqube
 ```
 SonarQube application uses port 9000. access SonarQube from browser
 ```sh
