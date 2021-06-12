@@ -79,7 +79,7 @@ su - postgres
 ```
 Create a new user by typing:
 ```sh
-createuser sonar
+createuser sonaruser
 ```
 Switch to the PostgreSQL shell.
 ```sh
@@ -87,7 +87,7 @@ psql
 ```
 Set a password for the newly created user for SonarQube database.
 ```sh
-ALTER USER sonar WITH ENCRYPTED password 'sonar';
+ALTER USER sonaruser WITH ENCRYPTED password 'admin123';
 ```
 Create a new database for PostgreSQL database by running:
 ```sh
@@ -118,7 +118,7 @@ Download & unzip SonarQube Latest Version
 Create new user give ownership to /opt/sonarqube directory 
 ```sh
  # useradd sonar
- # password sonar
+ # passwd sonar
  # chown -R sonar:sonar /opt/sonarqube
 ```
 SonarQube Server Instance
@@ -129,8 +129,8 @@ vi /opt/sonarqube/conf/sonar.properties
 
 ```sh
 - File Name: /opt/sonarqube/conf/sonar.properties
-  - sonar.jdbc.username=`sonar`
-  - sonar.jdbc.password=`sonar`
+  - sonar.jdbc.username=`sonaruser`
+  - sonar.jdbc.password=`admin123`
   - sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
 ```
 Switch to sonar user and start SonarQube service : Edit the sonar script file and set RUN_AS_USER
