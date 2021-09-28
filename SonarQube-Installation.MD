@@ -131,7 +131,7 @@ vi /opt/sonarqube/conf/sonar.properties
 - File Name: /opt/sonarqube/conf/sonar.properties
   - sonar.jdbc.username=`sonaruser`
   - sonar.jdbc.password=`admin123`
-  - sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
+  - sonar.jdbc.url=jdbc:postgresql://localhost/sonardb
 ```
 Switch to sonar user and start SonarQube service : Edit the sonar script file and set RUN_AS_USER
 ```sh
